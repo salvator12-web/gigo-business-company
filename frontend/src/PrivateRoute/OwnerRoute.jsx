@@ -2,9 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 
-const ALLOWED_ROLES = ["owner", "branch_manager", "sales_manager", "warehouse_manager", "cashier"];
-
-const ManagerRoute = ({ children }) => {
+const OwnerRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   const location = useLocation();
 
@@ -20,11 +18,11 @@ const ManagerRoute = ({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (!ALLOWED_ROLES.includes(user.role)) {
+  if (user.role !== "owner") {
     return <Navigate to="/unauthorized" replace />;
   }
 
   return children;
 };
 
-export default ManagerRoute;
+export default OwnerRoute;
